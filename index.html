@@ -150,6 +150,22 @@
       color: #FF6B6B;
     }
     
+    .nav-button {
+      background: #FF6B6B;
+      color: #fff !important;
+      padding: 8px 18px;
+      border-radius: 50px;
+      box-shadow: 0 2px 5px rgba(255, 107, 107, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .nav-button:hover {
+      background: #ff5252;
+      color: #fff !important;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(255, 107, 107, 0.4);
+    }
+    
     .mobile-menu {
       display: none;
       font-size: 1.5rem;
@@ -787,7 +803,7 @@
         <li><a href="#article">Tips & Advice</a></li>
         <li><a href="#benefits">App Benefits</a></li>
         <li><a href="#testimonials">Parent Stories</a></li>
-        <li><a href="#download">Download</a></li>
+        <li><a href="#download" class="nav-button">Download</a></li>
       </ul>
       <div class="mobile-menu">
         <i class="fas fa-bars"></i>
