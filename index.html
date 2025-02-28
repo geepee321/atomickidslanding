@@ -1052,7 +1052,7 @@
         </a>
       </div>
       
-      <p class="cta-reminder">Free to download with premium features available</p>
+      <p class="cta-reminder">Complete free to use</p>
     </div>
   </section>
   
@@ -1138,6 +1138,30 @@
         if (!isClickInsideMenu && navLinks.classList.contains('active')) {
           navLinks.classList.remove('active');
         }
+      });
+
+      // Example for tracking app store button clicks
+      document.querySelector('.store-btn:first-child').addEventListener('click', function() {
+        gtag('event', 'click', {
+          'event_category': 'engagement',
+          'event_label': 'App Store Button'
+        });
+      });
+      
+      // Track Google Play Store button clicks
+      document.querySelector('.store-btn:nth-child(2)').addEventListener('click', function() {
+        gtag('event', 'click', {
+          'event_category': 'engagement',
+          'event_label': 'Google Play Button'
+        });
+      });
+      
+      // Track navigation menu Download button clicks
+      document.querySelector('.nav-button').addEventListener('click', function() {
+        gtag('event', 'click', {
+          'event_category': 'engagement',
+          'event_label': 'Top Menu Download Button'
+        });
       });
     });
   </script>
