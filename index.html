@@ -790,6 +790,122 @@
         font-size: 1.5rem;
       }
     }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    .modal-content {
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 20px;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      animation: slideIn 0.4s ease;
+    }
+    
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 28px;
+      color: #aaa;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .close-modal:hover {
+      color: #FF6B6B;
+    }
+    
+    .modal-icon {
+      width: 80px;
+      height: 80px;
+      background: #FFE66D;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 25px;
+      color: #444;
+      font-size: 2.5rem;
+    }
+    
+    .modal h3 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+    
+    .modal p {
+      font-size: 1.1rem;
+      color: #666;
+      margin-bottom: 1.5rem;
+    }
+    
+    .notify-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .notify-form input {
+      padding: 12px 20px;
+      border-radius: 50px;
+      border: 2px solid #eee;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .notify-form input:focus {
+      border-color: #FFE66D;
+      outline: none;
+    }
+    
+    .success-message {
+      color: #4ECDC4;
+      font-weight: 600;
+      margin-top: 10px;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes slideIn {
+      from { transform: translateY(-30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+    @media (max-width: 576px) {
+      .modal-content {
+        padding: 30px 20px;
+      }
+      
+      .modal h3 {
+        font-size: 1.6rem;
+      }
+      
+      .modal p {
+        font-size: 1rem;
+      }
+    }
   </style>
 </head>
 
@@ -1107,6 +1223,23 @@
     </div>
   </footer>
 
+  <!-- Coming Soon Popup Modal -->
+  <div id="coming-soon-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <div class="modal-icon">
+        <i class="fas fa-rocket"></i>
+      </div>
+      <h3>Coming Soon!</h3>
+      <p>The Atomic Kids App is currently in development and will be available for download soon.</p>
+      <p>Sign up to be notified when we launch:</p>
+      <form id="notify-form" class="notify-form">
+        <input type="email" placeholder="Your email address" required>
+        <button type="submit" class="btn">Notify Me</button>
+      </form>
+    </div>
+  </div>
+
   <script>
     // Enhanced script to handle mobile menu toggle
     document.addEventListener('DOMContentLoaded', function() {
@@ -1140,28 +1273,81 @@
         }
       });
 
-      // Example for tracking app store button clicks
-      document.querySelector('.store-btn:first-child').addEventListener('click', function() {
+      // Modal functionality
+      const modal = document.getElementById('coming-soon-modal');
+      const closeBtn = document.querySelector('.close-modal');
+      
+      // Function to open modal
+      function openModal() {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+      }
+      
+      // Function to close modal
+      function closeModal() {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto'; // Re-enable scrolling
+      }
+      
+      // Close modal when clicking X
+      closeBtn.addEventListener('click', closeModal);
+      
+      // Close modal when clicking outside the modal content
+      window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+          closeModal();
+        }
+      });
+      
+      // Close modal when pressing Escape key
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+          closeModal();
+        }
+      });
+
+      // Handle notify form submission (prevent page reload)
+      document.getElementById('notify-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        // Here you would typically send the email to your server
+        // For now, just show a confirmation message
+        this.innerHTML = '<p class="success-message">Thanks! We\'ll notify you when we launch.</p>';
+        
+        // Track the email submission in Google Analytics
+        gtag('event', 'submit', {
+          'event_category': 'engagement',
+          'event_label': 'Launch Notification Signup'
+        });
+      });
+
+      // App Store button - show modal and track event
+      document.querySelector('.store-btn:first-child').addEventListener('click', function(e) {
+        e.preventDefault();
         gtag('event', 'click', {
           'event_category': 'engagement',
           'event_label': 'App Store Button'
         });
+        openModal();
       });
       
-      // Track Google Play Store button clicks
-      document.querySelector('.store-btn:nth-child(2)').addEventListener('click', function() {
+      // Google Play Store button - show modal and track event
+      document.querySelector('.store-btn:nth-child(2)').addEventListener('click', function(e) {
+        e.preventDefault();
         gtag('event', 'click', {
           'event_category': 'engagement',
           'event_label': 'Google Play Button'
         });
+        openModal();
       });
       
-      // Track navigation menu Download button clicks
-      document.querySelector('.nav-button').addEventListener('click', function() {
+      // Navigation menu Download button - show modal and track event
+      document.querySelector('.nav-button').addEventListener('click', function(e) {
+        e.preventDefault();
         gtag('event', 'click', {
           'event_category': 'engagement',
           'event_label': 'Top Menu Download Button'
         });
+        openModal();
       });
     });
   </script>
