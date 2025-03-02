@@ -1301,20 +1301,6 @@
         }
       });
 
-      // Handle notify form submission (prevent page reload)
-      document.getElementById('notify-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        // Here you would typically send the email to your server
-        // For now, just show a confirmation message
-        this.innerHTML = '<p class="success-message">Thanks! We\'ll notify you when we launch.</p>';
-        
-        // Track the email submission in Google Analytics
-        gtag('event', 'submit', {
-          'event_category': 'engagement',
-          'event_label': 'Launch Notification Signup'
-        });
-      });
-
       // App Store button - show modal and track event
       document.querySelector('.store-btn:first-child').addEventListener('click', function(e) {
         e.preventDefault();
@@ -1335,14 +1321,14 @@
         openModal();
       });
       
-      // Navigation menu Download button - show modal and track event
+      // Nav Download button - track event but don't show modal, just scroll to download section
       document.querySelector('.nav-button').addEventListener('click', function(e) {
-        e.preventDefault();
+        // Don't prevent default here, let it use the normal anchor behavior
         gtag('event', 'click', {
-          'event_category': 'engagement',
+          'event_category': 'navigation',
           'event_label': 'Top Menu Download Button'
         });
-        openModal();
+        // No openModal() call here
       });
     });
   </script>
